@@ -38,8 +38,10 @@ public class MemberMenu {
 			List<Member> list = null;
 			String memberId = null;
 			String memberName = null;
-			String memberUpdate = null;
-			String memberDelete = null;
+			String memberUpdateId = null;
+			String memberUpdatePassword = null;
+			String memberDeleteId = null;
+			String memberDeletePassword = null;
 			
 			switch(choice) {
 				case 1:
@@ -69,21 +71,23 @@ public class MemberMenu {
 					displayMsg(msg);
 					break;
 				case 5: 
-					memberUpdate = inputUpdateId();
+					memberUpdateId = inputId("변경");
+					memberUpdatePassword = inputPassword("변경");
 					list = memberController.selectAll();
-					member = searchMem(memberUpdate,list);
+					member = searchMem(memberUpdateId,memberUpdatePassword,list);
 					//입력한 id에 해당하는 객체를 전달
 					if(member != null) {
 						member = inputUpdate(member);						
-						result = memberController.selectUpdate(memberUpdate,member);
-						msg = result > 0 ? "회원 가입 성공!" :"회원 가입 실패!";
+						result = memberController.selectUpdate(memberUpdateId,memberUpdatePassword,member);
+						msg = result > 0 ? "회원 정보 수정 성공!" :"회원 정보 수정 실패!";
 						displayMsg(msg);
 						displayMember(member);
 					}
 					break;
 				case 6: 
-					memberDelete = inputDelete();
-					result = memberController.selectDelete(memberDelete);
+					memberDeleteId = inputId("삭제");
+					memberDeletePassword = inputPassword("삭제");
+					result = memberController.selectDelete(memberDeleteId,memberDeletePassword);
 					msg = result > 0 ? "회원 탈퇴 성공!" :"회원 탈퇴 실패!";
 					displayMsg(msg);
 					break;
@@ -100,19 +104,25 @@ public class MemberMenu {
 	}
 
 	
-	
+	//5,6 선택했을 때 password 입력
+	private String inputPassword(String select) {
+		System.out.print(select+"할 id의 비밀번호 입력 : ");
+		return sc.next();
+		
+	}
 
 
 
-	private String inputDelete() {
-		System.out.print("삭제할 id 입력 : ");
+	//5,6 선택했을 때 id 입력
+	private String inputId(String select) {
+		System.out.print(select+"할 id 입력 : ");
 		return sc.next();
 	}
 
-	//입력한 id에 해당하는 객체를 전달
-	private Member searchMem(String memberUpdate, List<Member> list) {
+	//입력한 id,비밀번호와 일치하는 해당하는 객체를 전달
+	private Member searchMem(String memberUpdateId, String memberUpdatePassword, List<Member> list) {
 		for(Member member :list) {
-			if(memberUpdate.equals(member.getMemberId())) {
+			if(memberUpdateId.equals(member.getMemberId())&&memberUpdatePassword.equals(member.getPassword())) {
 				return member;
 			}	
 		}

@@ -300,10 +300,10 @@ public class MemberDao {
 
 	}
 
-	public int selectUpdate(String memberUpdate,Member member) {
+	public int selectUpdate(String memberUpdateId,String memberUpdatePassword, Member member) {
 		//접근할 수 있도록 지역변수로 끌어올림
 		Connection conn = null;
-		String sql = "update member set password =?,email=?,phone=?,address=?,hobby=? where member_id = ?";
+		String sql = "update member set password =?,email=?,phone=?,address=?,hobby=? where member_id = ?and password=?";
 		PreparedStatement pstmt = null;
 		int result =0;
 		
@@ -322,7 +322,8 @@ public class MemberDao {
 			pstmt.setString(3, member.getPhone());
 			pstmt.setString(4, member.getAddress());
 			pstmt.setString(5, member.getHobby());
-			pstmt.setString(6, memberUpdate); //회원  id로 회원정보 변경
+			pstmt.setString(6, memberUpdateId);
+			pstmt.setString(7, memberUpdatePassword);
 			
 		
 			//5. Statement 객체 실행. DB에 쿼리 요청
@@ -356,10 +357,10 @@ public class MemberDao {
 		return result;
 	}
 
-	public int selectDelete(String memberDelete) {
+	public int selectDelete(String memberDeleteId, String memberDeletePassword) {
 		//접근할 수 있도록 지역변수로 끌어올림
 		Connection conn = null;
-		String sql = "delete from member where member_id = ? ";
+		String sql = "delete from member where member_id = ? and password = ?";
 		PreparedStatement pstmt = null;
 		int result =0;
 		
@@ -373,7 +374,8 @@ public class MemberDao {
 			conn.setAutoCommit(false);
 			//4. PreparedStatement객체생성(미완성쿼리(값대입이 아직 안된 상태)) 및 값대입
 			pstmt = conn.prepareStatement(sql); //쿼리를 실행하는 객체
-			pstmt.setString(1, memberDelete); 
+			pstmt.setString(1, memberDeleteId); 
+			pstmt.setString(2, memberDeletePassword); 
 			
 		
 			//5. Statement 객체 실행. DB에 쿼리 요청

@@ -35,12 +35,12 @@ public class MemberController {
 		return memberDao.selectName(memberName);
 	}
 
-	public int selectUpdate(String memberUpdate, Member member) {
-		return memberDao.selectUpdate(memberUpdate,member);
+	public int selectUpdate(String memberUpdateId,String memberUpdatePassword, Member member) {
+		return memberDao.selectUpdate(memberUpdateId,memberUpdatePassword,member);
 	}
 
-	public int selectDelete(String memberDelete) {
-		return memberDao.selectDelete(memberDelete);
+	public int selectDelete(String memberDeleteId, String memberDeletePassword) {
+		return memberDao.selectDelete(memberDeleteId,memberDeletePassword);
 	}
 
 
